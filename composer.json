@@ -1,0 +1,16 @@
+{
+    "name": "knevelina/states",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Wouter van den Brink",
+            "email": "git@woutervdb.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Knevelina\\States\\": "src/"
+        }
+    }
+}
