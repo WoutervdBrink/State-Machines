@@ -2,7 +2,13 @@
 
 namespace Knevelina\States;
 
-class MachineSerializer
+/**
+ * Serializes and unserializes DFA state machines.
+ * 
+ * Provides DOT exporting functionality and exporting to an object which can,
+ * for example, be serialized using JSON.
+ */
+class DFAMachineSerializer
 {
     /**
      * Escape a string for use in a DOT output.
@@ -19,10 +25,10 @@ class MachineSerializer
     /**
      * Get the DOT representation of the machine.
      *
-     * @param Machine $machine
+     * @param DFAMachine $machine
      * @return string
      */
-    public static function getDot(Machine $machine): string
+    public static function getDot(DFAMachine $machine): string
     {
         $i = 0;
         $stateMap = [];
@@ -57,11 +63,11 @@ class MachineSerializer
      * Unserialize the serialization of a state machine.
      *
      * @param object $serialized
-     * @return Machine
+     * @return DFAMachine
      */
-    public static function unserialize(object $serialized): Machine
+    public static function unserialize(object $serialized): DFAMachine
     {
-        $machine = new Machine($serialized->alphabet);
+        $machine = new DFAMachine($serialized->alphabet);
         $stateMap = [];
 
         foreach ($serialized->states as $serializedState) {
@@ -85,7 +91,7 @@ class MachineSerializer
      * @param Machine $machine
      * @return object
      */
-    public static function serialize(Machine $machine): object
+    public static function serialize(DFAMachine $machine): object
     {
         $serialized = (object)[
             'alphabet' => $machine->getAlphabet(),

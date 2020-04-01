@@ -2,19 +2,22 @@
 
 namespace Knevelina\States;
 
-class Machine
+/**
+ * A deterministic finite automaton (DFA) state machine.
+ */
+class DFAMachine
 {
     /**
      * The machine's states.
      *
-     * @var State[]
+     * @var DFAState[]
      */
     protected $states;
 
     /**
      * The initial state.
      *
-     * @var State
+     * @var DFAState
      */
     protected $initial;
 
@@ -41,7 +44,7 @@ class Machine
     /**
      * Get the machine's states.
      *
-     * @return State[]
+     * @return DFAState[]
      */
     public function getStates(): array
     {
@@ -51,9 +54,9 @@ class Machine
     /**
      * Get the machine's initial state.
      *
-     * @return State
+     * @return DFAState
      */
-    public function getInitialState(): State
+    public function getInitialState(): DFAState
     {
         return $this->initial;
     }
@@ -74,11 +77,11 @@ class Machine
      *
      * @param string $id
      * @param boolean $accepting
-     * @return State
+     * @return DFAState
      */
-    public function state(string $id, bool $accepting = false): State
+    public function state(string $id, bool $accepting = false): DFAState
     {
-        $state = new State($id, $accepting);
+        $state = new DFAState($id, $accepting);
 
         if ($this->initial === null) {
             $this->initial = $state;
@@ -92,10 +95,10 @@ class Machine
     /**
      * Set the machine's initial state.
      *
-     * @param State $state
+     * @param DFAState $state
      * @return void
      */
-    public function setInitialState(State $state)
+    public function setInitialState(DFAState $state)
     {
         if (!in_array($state, $this->states)) {
             throw new \InvalidArgumentException(sprintf('State %s is not part of this machine.', $state->id));
@@ -108,12 +111,12 @@ class Machine
      * Add a transition from one state to another state. The states may be
      * identical. The states must be part of the machine.
      *
-     * @param State $from
+     * @param DFAState $from
      * @param string $symbol
-     * @param State $to
+     * @param DFAState $to
      * @return self
      */
-    public function transition(State $from, string $symbol, State $to): self
+    public function transition(DFAState $from, string $symbol, DFAState $to): self
     {
         if (!in_array($from, $this->states)) {
             throw new \InvalidArgumentException(sprintf('State %s is not part of this machine.', $from->id));
@@ -390,7 +393,7 @@ class Machine
      *
      * @return Machine
      */
-    public function getMinimizedMachine(): Machine
+    public function getMinimizedMachine(): DFAMachine
     {
         $equivalentStates = $this->getEquivalentStates();
 
@@ -406,7 +409,7 @@ class Machine
             ];
         }, []);
 
-        $machine = new Machine($this->getAlphabet());
+        $machine = new DFAMachine($this->getAlphabet());
         $stateMap = [];
 
         foreach ($this->getStates() as $state) {
@@ -459,11 +462,11 @@ class Machine
     /**
      * Get the new label (ID) for combining two states.
      *
-     * @param State $i
-     * @param State $j
+     * @param DFAState $i
+     * @param DFAState $j
      * @return string
      */
-    protected function getStateLabel(State $i, State $j): string
+    protected function getStateLabel(DFAState $i, DFAState $j): string
     {
         return sprintf('%s_%s', $i->getId(), $j->getId());
     }

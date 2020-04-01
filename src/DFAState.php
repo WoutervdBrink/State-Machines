@@ -2,7 +2,7 @@
 
 namespace Knevelina\States;
 
-class State {
+class DFAState {
     /**
      * The ID, or label, of the state.
      *
@@ -21,7 +21,7 @@ class State {
      * The transitions of the state. Associative array where the key is the
      * symbol which causes a transition to the next state.
      *
-     * @var State[]
+     * @var DFAState[]
      */
     protected $transitions;
 
@@ -72,10 +72,10 @@ class State {
      * Add a transition to the state.
      *
      * @param string $symbol
-     * @param State $to
+     * @param DFAState $to
      * @return void
      */
-    public function addTransition(string $symbol, State $to)
+    public function addTransition(string $symbol, DFAState $to)
     {
         $this->transitions[$symbol] = $to;
     }
@@ -96,10 +96,10 @@ class State {
      * exist. Use hasNext to prevent this.
      *
      * @param string $symbol
-     * @return State
+     * @return DFAState
      * @throws \InvalidArgumentException
      */
-    public function getNext(string $symbol): State
+    public function getNext(string $symbol): DFAState
     {
         if (!$this->hasNext($symbol)) {
             throw new \InvalidArgumentException(sprintf('Transition for symbol %s is not defined in state %s', $symbol, $this->id));
